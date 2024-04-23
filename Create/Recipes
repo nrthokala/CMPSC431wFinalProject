@@ -1,0 +1,5 @@
+CREATE table ”Recipes” 
+(RecipeId SERIAL primary key, 
+RecipeName varchar(150), 
+caloriesPerServing integer);
+
