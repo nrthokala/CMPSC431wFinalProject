@@ -1,0 +1,5 @@
+CREATE table ”UserConnections”
+ (UserConnectionsId SERIAL primary key, 
+UserId integer REFERENCES “User”(UserId), 
+ConnectedtoUserId integer REFERENCES “User”(UserId));
+
