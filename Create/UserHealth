@@ -1,0 +1,5 @@
+CREATE table ”UserHealth”
+(UserHealthId SERIAL primary key, 
+UserId integer REFERENCES “User”(UserId), 
+HealthConditions varchar(250));
+
