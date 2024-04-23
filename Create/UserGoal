@@ -1,0 +1,6 @@
+CREATE table ”UserGoal” 
+(UserGoalId SERIAL primary key, 
+GoalType varchar(25), 
+UserId integer REFERENCES “User”(UserId), 
+currentWeight integer, 
+GoalWeight integer);
