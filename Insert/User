@@ -1,0 +1,8 @@
+Insert into "User” (UserName, Age, Address) VALUES 
+(‘Kate', 23, ‘123 Cyber Lane'),
+(‘Robert', 34, '32 B-Lane'),
+(‘Martha', 43, ‘345 Cedar Road'),
+(‘Jacob', 18, '453 Power Alley'),
+(‘Wisely', 54, ‘874 Broader Street'),
+(‘Major', 33, ‘374 Working Street');
+
