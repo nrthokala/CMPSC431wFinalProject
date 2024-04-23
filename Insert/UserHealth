@@ -1,0 +1,14 @@
+Insert into "UserHealth” (UserId, HealthConditions) VALUES
+(5, ‘Diabetes'),
+(5, ‘High Blood Pressure'),
+(4, ‘Heart murmur'),
+(2, ‘Vertigo’),
+(3, ‘Cholesterol'),
+(2, ‘HypoThyroid'),
+(1, ‘Diabetes'),
+(6, ‘High Blood Pressure'),
+(2, ‘Diabetes'),
+(3, ‘HypoThyroid'),
+(4, ‘Cholesterol'),
+(1, ‘Heart murmur');
+
