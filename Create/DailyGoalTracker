@@ -1,0 +1,10 @@
+CREATE table ”DailyGoalTracker” 
+(DailyGoalTrackerId SERIAL primary key, 
+caloriesConsumed integer, 
+RecipeLogId integer REFERENCES “RecipeLog”(RecipeLogId), 
+UserId integer REFERENCES “User”(UserId), 
+caloriesBurnt integer, 
+waterLogId integer REFERENCES “WaterLog”(waterLogId), 
+FoodLogId integer REFERENCES “FoodLog”(FoodLogId), 
+ExerciseLogId integer REFERENCES “ExerciseLog”(ExerciseLogId), 
+daysResult varchar(250));
