@@ -1,0 +1,6 @@
+CREATE table ”User” 
+(UserId SERIAL primary key, 
+UserName varchar(100), 
+Age integer, 
+Address varchar(500));
+
