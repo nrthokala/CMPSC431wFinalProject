@@ -1,0 +1,5 @@
+CREATE table ”FoodLog” 
+(FoodLogId SERIAL primary key, 
+FoodId integer REFERENCES “Food”(FoodId), 
+UserId integer REFERENCES “User”(UserId), 
+FoodLogDate Date);
