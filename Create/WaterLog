@@ -1,0 +1,6 @@
+CREATE table ”WaterLog” 
+(WaterLogId SERIAL primary key, 
+UserId integer REFERENCES “User”(UserId), 
+NumOfServings integer, 
+WaterLogDate Date);
+
