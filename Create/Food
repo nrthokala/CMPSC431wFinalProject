@@ -1,0 +1,5 @@
+CREATE table ”Food” 
+(FoodId SERIAL primary key, 
+foodName varchar(250), 
+calories integer, 
+foodGroup varchar(200));
