@@ -2,7 +2,7 @@ CREATE STATEMENTS
 
 CREATE SCHEMA “NeoFitness”;   /* Create my schema in the database */
 SET Schema ‘NeoFitness’;  /* connects me to the schema created */
-
+ 
 CREATE table ”User” 
 (UserId SERIAL primary key, 
 UserName varchar(100), 
