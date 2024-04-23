@@ -1,0 +1,8 @@
+Insert into "UserGoal” (GoalType, UserId, currentWeight, GoalWeight) VALUES
+(‘Lose Weight', 1, 170, 150),
+(‘Lose weight', 2, 165, 155),
+(‘Gain Weight', 3, 112, 140),
+(‘Gain Weight', 4, 110, 130),
+(‘Lose Weight', 5, 180, 140),
+(‘Lose Weight', 6, 210, 160);
+
