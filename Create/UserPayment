@@ -1,0 +1,6 @@
+CREATE table ”UserPayment”
+(UserPaymentId SERIAL primary key, 
+UserId integer REFERENCES “User”(UserId), 
+Amount Numeric(5,2), 
+DatePaid Date);
+
