@@ -1,0 +1,137 @@
+#!/bin/bash
+## script name; 431ProjectCLI.bsh
+## wrapper script to execute postgres script with variables
+
+Echo "Enter the postgreSQL password:"
+read -s PGPASSWORD
+export PGPASSWORD
+
+DatabasePATH="/Library/PostgreSQL/16/bin"
+
+while [[ $option != "12" ]]
+do
+
+printf '\n'
+Echo "=========================================================================================="
+Echo "Welcome to the Database CLI Interface!
+
+    Please Select an option:
+
+    1. Insert data for a new User into User table.
+
+    2. Delete a User Health record.
+
+    3. Update the User Address for a specific User.
+
+    4. Select all users with age above 30 years.
+
+    5. Select total number of connections each user has.
+
+    6. Select all users in the order of their Age starting with the oldest.
+
+    7. Select User health conditions of all users who are older than 25 years using JOIN.
+
+    8. Select the total number of calories burnt by each user for the April month 2024 using grouping.
+
+    9. Select User health conditions of users older than 30 yrs using SUBQUERY
+
+    10. Insert a new Daily tracker log inside a TRANSACTION.
+
+    11. Use error handling in your script.
+
+    12.Exit
+
+Please select your option[1-12]: 
+   "
+
+read option
+
+#Echo "=========================================================================================="
+
+if [ $option -eq 12 ]; then
+exit;
+fi
+
+
+if [ ${option} -eq 1 ]; then
+
+     echo "Enter User Name:"
+     read UserName
+     echo "Enter User Age:"
+     read UserAge
+     echo "Enter User Address:"
+     read UserAddress
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f InsertNewUser.sql -v UserName="'$UserName'" -v UserAge="$UserAge" -v UserAddress="'$UserAddress'"
+    
+fi
+
+if [ ${option} -eq 2 ]; then
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -c "SELECT * FROM \"NeoFitness\".\"UserHealth\";"
+  
+    echo "Enter User record Id you need to remove:"
+    read UserHealthId
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f DeleteUserHealth.sql -v UserHealthId="$UserHealthId"
+
+fi
+
+if [ ${option} -eq 3 ]; then
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -c "SELECT * FROM \"NeoFitness\".\"User\";"
+  
+    echo "Enter Username that would like to change the address of:"
+    read UserName
+
+    echo "Enter the new Address:"
+    read UserAddress
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f UpdateUserAddress.sql -v UserName="'$UserName'" -v UserAddress="'$UserAddress'"
+
+fi
+
+if [ ${option} -eq 4 ]; then
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -c "SELECT * FROM \"NeoFitness\".\"User\" WHERE Age > 30;"
+  
+fi
+
+if [ ${option} -eq 5 ]; then
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -c "SELECT U.UserName, count(UC.ConnectedtoUserId) FROM \"NeoFitness\".\"UserConnections\" AS UC JOIN \"NeoFitness\".\"User\" U ON U.UserId = UC.UserId GROUP BY U.UserName;"
+  
+fi
+
+if [ ${option} -eq 6 ]; then
+
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -c "SELECT * FROM \"NeoFitness\".\"User\" ORDER BY AGE DESC;"
+  
+fi
+
+if [ ${option} -eq 7 ]; then
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f Userover25.sql 
+fi
+
+if [ ${option} -eq 8 ]; then
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f CaloriesBurntUser.sql 
+fi
+
+if [ ${option} -eq 9 ]; then
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f HealthConditions.sql 
+fi
+
+if [ ${option} -eq 10 ]; then
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f Transaction.sql 
+fi
+
+if [ ${option} -eq 11 ]; then
+    $DatabasePATH/psql -h localhost -p 5432 -U postgres -f ErrorHandling.sql 
+fi
+
+
+sleep 5;
+
+done
+exit;
+~
