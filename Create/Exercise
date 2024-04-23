@@ -1,0 +1,5 @@
+CREATE table ”Exercise” 
+(ExerciseId SERIAL primary key, 
+ExerciseType varchar(100), 
+caloriesPerKg integer);
+
