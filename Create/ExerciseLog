@@ -1,0 +1,6 @@
+CREATE table ”ExerciseLog” 
+(ExerciseLogId SERIAL primary key, 
+ExerciseId integer REFERENCES “Exercise”(ExerciseId), 
+UserId integer REFERENCES “User”(UserId), 
+ExerciseLogDate Date);
+
