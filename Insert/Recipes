@@ -1,0 +1,12 @@
+Insert into “Recipes” (RecipeName, caloriesPerServing) VALUES
+('Grilled Chicken Salad', 250),
+('Vegetable Stir-Fry', 200),
+('Quinoa Salad', 180),
+('Tofu Scramble', 220),
+('Salmon with Asparagus', 300),
+('Spinach and Feta Omelette', 180),
+('Quinoa Stuffed Bell Peppers', 220),
+('Grilled Salmon with Lemon', 280),
+('Chicken and Vegetable Skewers', 230),
+('Mushroom Risotto', 260);
+
