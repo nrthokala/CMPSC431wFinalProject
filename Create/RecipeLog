@@ -1,0 +1,7 @@
+CREATE table ”RecipeLog” 
+(RecipeLogId SERIAL primary key, 
+RecipeId integer REFERENCES “Recipes”(RecipeId), 
+UserId integer REFERENCES “User”(UserId), 
+NumOfServings integer, 
+RecipeLogDate Date);
+
