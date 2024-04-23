@@ -1,0 +1,8 @@
+Insert into "Exercise” (ExerciseType, CaloriesPerKg) VALUES
+(‘Running', 10),
+(‘Yoga', 5),
+(‘Cycling', 7),
+(‘Pilates', 6),
+(‘HIIT',15),
+('Strength Training', 10); 
+
