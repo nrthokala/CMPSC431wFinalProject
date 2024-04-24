@@ -1,116 +1,14 @@
 # CMPSC431wFinalProject
- Below are the questions on the CLI and their corresponding queries.
+The NeoFitness Database serves as a comprehensive tool for users looking to manage their fitness and health-related data effectively. Users can interact with the database through various interfaces, including a CLI (Command Line Interface) as well as potentially a web or mobile application.
 
-Insert data of a new User in the User table. 
-I made a call to sql file InsertNewUser.sql from the bash file, passing variable parameters :UserName, :UserAge and :UserAddress entered at the command prompt.
-	
-INSERT INTO "NeoFitness"."User"  (UserName, Age, Address) 
-VALUES (:UserName, :UserAge, :UserAddress);
+Registration and Profile Management: Users would typically start by registering themselves within the system, providing essential details such as their name, age, address, and health-related information. Once registered, users can manage their profiles, update personal information, set fitness goals, and track their progress over time.
 
+Tracking Health Metrics: One of the primary use cases of the NeoFitness Database is for users to track their health metrics. This includes recording data such as weight, daily calorie intake, water consumption, exercise routines, and health conditions. By regularly inputting this information into the database, users can gain insights into their overall health status and make informed decisions to improve their well-being.
 
- Delete a User Health record.
-	I made a call to sql file DeleteUserHealth.sql from the bash file, passing variable parameters :UserHealthId as the input value entered at the command prompt.
+Goal Setting and Monitoring: Users can set specific fitness goals within the database, such as weight loss, muscle gain, or improving cardiovascular health. The system allows users to monitor their progress towards these goals by tracking relevant metrics and providing visualizations or reports to illustrate their journey. For example, users can track changes in weight over time, monitor calorie intake and expenditure, and analyze the effectiveness of different exercise routines.
 
-	DELETE FROM “NeoFitness”.”UserHealth” 
-WHERE UserHealthId = :UserHealthId;
+Social Networking and Support: The NeoFitness Database also facilitates social networking and support among users. Through features such as user connections, users can connect with friends, family, or fitness buddies to share progress, motivate each other, and participate in challenges or group activities. This fosters a sense of community and accountability, which can be instrumental in maintaining long-term fitness habits.
 
-Update the UserAddress for a specific User.
-I made a call to sql file UpdateUserAddress.sql from the bash file, passing variable parameters :UserName and :UserAddress are the input entered at the command prompt
+Nutrition and Recipe Management: Another valuable aspect of the NeoFitness Database is its capability to manage nutrition and recipes. Users can access a database of foods with nutritional information, track their daily food intake, and explore healthy recipes tailored to their dietary preferences and fitness goals. This feature helps users make informed decisions about their diet and ensures they are consuming the right balance of nutrients to support their fitness journey.
 
-UPDATE “NeoFitness”.”User” 
-SET UserAddress = :UserAddress
-WHERE UserName = :UserName;
-
-Select all users with age above 30 yrs. 
-	I called this script directly from the bash file
-
-	SELECT * FROM “NeoFitness”.”User”
-WHERE Age > 30;
-
-
-Select total number of connections each user has
-	I called this script directly from the bash file
-
-	SELECT U.UserName, COUNT(UC.ConnectedToUserId) AS UserConnections
-	FROM “NeoFitness”.”User” AS U
-	JOIN “NeoFitness”.”UserConnections” AS UC ON UC.UserId = U.UserId
-	GROUP BY U.UserName;
-
-Select all users in the order of their Age starting with the oldest.
-I called this script directly from the bash file
-
-SELECT * FROM "NeoFitness"."User" 
-ORDER BY Age DESC;
-
-Select User health conditions of all users who are older than 25 years.
-	I made a call to sql file Userover25.sql from the bash file
-
-	SELECT U.UserName, U.Age, UH.HealthConditions
-	FROM “NeoFitness”.”User” AS U
-	JOIN “NeoFitness”.”UserHealth” AS UH ON UH.UserId = U.UserId
-	WHERE U.Age > 25;
-	
-Select the total number of calories burnt by each user for the April month 2024 using grouping.
-I made a call to sql file CaloriesBurntUser.sql from the bash file
-
-SELECT EL.UserId, SUM(E.caloriesPerKg * UG.currentWeight) AS CaloriesBurnt, EL.ExerciseLogDate
-FROM “NeoFitness”.”ExerciseLog” AS EL
-JOIN  “NeoFitness”.”Exercise” AS E ON E.ExerciseId = EL.ExerciseId
-JOIN  “NeoFitness”.”UserGoal” AS UG ON UG.UserId = EL.UserId 
-WHERE EXTRACT(MONTH FROM EL.ExerciseLogDate) = 4 
-AND EXTRACT(YEAR FROM EL.ExerciseLogDate) = 2024 
-GROUP BY EL.UserId, EL.ExerciseLogDate;
-
-
-Select User health conditions of users older than 30 yrs using subquery
-	I made a call to sql file HealthConditions.sql from the bash file
-
-	SELECT UserId, HealthConditions
-	FROM “NeoFitness”.”UserHealth” 
-	WHERE UserId IN (SELECT UserId 
-FROM “NeoFitness”.”User”
- WHERE Age > 30);
-	
-
-Insert a new Daily tracker log inside a TRANSACTION.
-I made a call to sql file Transaction.sql from the bash file
-
-BEGIN;
-
-INSERT INTO "DailyGoalTracker" (UserId, RecipeLogId, WaterLogId, ExerciseLogId, FoodLogId, caloriesConsumed, caloriesBurnt)
-SELECT DISTINCT U.UserId, RL.RecipeLogId, WL.WaterLogId, EL.ExerciseLogId, FL.FoodLogId,
-COALESCE(F.calories,0) + (COALESCE(R.caloriesPerServing,0) * COALESCE(RL.NumofServings,0)) AS caloriesConsumed,
-(E.caloriesPerKg * UG.currentWeight) AS caloriesBurnt
-FROM "User" AS U
-JOIN "UserGoal" AS UG ON UG.UserId = U.UserId
-JOIN "ExerciseLog" AS EL ON EL.UserId = U.UserId
-JOIN "Exercise" AS E ON E.ExerciseId = EL.ExerciseId
-JOIN "FoodLog" AS FL ON FL.UserId = U.UserId AND FL.FoodLogDate = EL.ExerciseLogDate
-JOIN "Food" AS F ON F.FoodId = FL.FoodId
-LEFT JOIN "RecipeLog" AS RL ON RL.UserId = U.UserId AND RL.RecipeLogDate = EL.ExerciseLogDate
-LEFT JOIN "WaterLog" AS WL ON WL.UserId = U.UserId AND WL.WaterLogDate = EL.ExerciseLogDate
-LEFT JOIN "Recipes" AS R ON R.RecipeId = RL.RecipeId;
-
-COMMIT;
-
-	
-Use error handling in your script.
-I made a call to sql file ErrorHandling.sql from the bash file
-
-SET Schema 'NeoFitness';
-DO $$
-DECLARE
-   result int;
-BEGIN
-  Select count(*) INTO result from "DailyGoalTracker";
-  IF result = 0 THEN
-     RAISE EXCEPTION 'No data found';
-  ELSE
-     RAISE NOTICE 'Data Found.';
-  END IF;
- EXCEPTION
-   WHEN  OTHERS  THEN
-    RAISE NOTICE  'Exception occurred';
-END;
-$$
-language plpgsql;
+Overall, the NeoFitness Database empowers users to take control of their health and fitness by providing a centralized platform to track, analyze, and optimize various aspects of their well-being. Whether it's monitoring progress towards fitness goals, managing health metrics, connecting with others for support, or planning nutritious meals, the database serves as a valuable tool to promote a healthier lifestyle.
